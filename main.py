@@ -2,50 +2,64 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-app = FastAPI(title="Palette Studio")
+app = FastAPI(title="Balbhadra Solutions")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-FEATURED_PALETTES = [
+# NIC 62020 — Computer consultancy and computer facilities management activities
+SERVICES = [
     {
-        "name": "Arctic Dusk",
-        "tags": ["cool", "minimal"],
-        "colors": ["#E8F4F8", "#A8D8EA", "#4A90D9", "#2C3E6B", "#1A1F3A"],
+        "icon": "💻",
+        "title": "IT Strategy & Consulting",
+        "tags": ["Strategy", "Advisory"],
+        "description": "End-to-end technology roadmaps, digital transformation advisory, and IT governance frameworks tailored to your business goals.",
     },
     {
-        "name": "Terra Bloom",
-        "tags": ["warm", "earthy"],
-        "colors": ["#FFF8F0", "#F4C88A", "#D97B4F", "#8B3A2A", "#3D1A14"],
+        "icon": "🖥️",
+        "title": "Computer Facilities Management",
+        "tags": ["Infrastructure", "Operations"],
+        "description": "Full lifecycle management of your IT infrastructure — servers, networks, storage, and data centres — keeping systems available 24/7.",
     },
     {
-        "name": "Forest Mist",
-        "tags": ["nature", "muted"],
-        "colors": ["#F2F5F0", "#B8CDB5", "#6A9A72", "#3D6B4F", "#1E3328"],
+        "icon": "☁️",
+        "title": "Cloud Migration & Management",
+        "tags": ["Cloud", "DevOps"],
+        "description": "Seamless migration to public, private, or hybrid cloud environments with ongoing cost optimisation and performance monitoring.",
     },
     {
-        "name": "Neon Pulse",
-        "tags": ["vibrant", "dark"],
-        "colors": ["#0D0D0D", "#1A1A2E", "#16213E", "#00D4FF", "#FF006E"],
+        "icon": "🔒",
+        "title": "Cybersecurity Advisory",
+        "tags": ["Security", "Compliance"],
+        "description": "Risk assessments, vulnerability management, and compliance consulting (ISO 27001, GDPR) to safeguard your digital assets.",
     },
     {
-        "name": "Peach Dream",
-        "tags": ["soft", "pastel"],
-        "colors": ["#FFF0EB", "#FFD6C8", "#FFB3A0", "#FF8C7A", "#E85D5D"],
+        "icon": "🛠️",
+        "title": "Software & Systems Integration",
+        "tags": ["Integration", "Development"],
+        "description": "Custom software consulting, ERP/CRM implementation guidance, and seamless integration of enterprise systems.",
     },
     {
-        "name": "Midnight Ink",
-        "tags": ["dark", "moody"],
-        "colors": ["#F5F5F7", "#C8C8D0", "#6B6B85", "#2E2E4A", "#0A0A18"],
+        "icon": "📊",
+        "title": "IT Support & Helpdesk Services",
+        "tags": ["Support", "Managed Services"],
+        "description": "Dedicated L1–L3 technical support, remote monitoring, and managed helpdesk solutions to minimise downtime.",
     },
 ]
 
 STATS = [
-    {"value": "50K+", "label": "Palettes Generated"},
-    {"value": "12K+", "label": "Happy Designers"},
-    {"value": "200+", "label": "Curated Collections"},
-    {"value": "4.9★", "label": "Average Rating"},
+    {"value": "200+", "label": "Clients Served"},
+    {"value": "15+", "label": "Years of Expertise"},
+    {"value": "98%", "label": "Client Retention Rate"},
+    {"value": "50+", "label": "Certified Consultants"},
 ]
+
+NIC_INFO = {
+    "nic2": "62 — Computer programming, consultancy and related activities",
+    "nic4": "6202 — Computer consultancy and computer facilities management activities",
+    "nic5": "62020 — Computer consultancy and computer facilities management activities",
+    "activity": "Services",
+}
 
 
 @app.get("/")
@@ -54,8 +68,19 @@ async def home(request: Request):
         request,
         "index.html",
         {
-            "palettes": FEATURED_PALETTES,
+            "services": SERVICES,
             "stats": STATS,
+            "nic": NIC_INFO,
         },
     )
+
+
+@app.get("/privacy")
+async def privacy(request: Request):
+    return templates.TemplateResponse(request, "privacy.html", {})
+
+
+@app.get("/terms")
+async def terms(request: Request):
+    return templates.TemplateResponse(request, "terms.html", {})
 
